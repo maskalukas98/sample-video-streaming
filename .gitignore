@@ -1,0 +1,9 @@
+./frontend/node_modules
+./frontend/.idea
+
+./video-service/node_modules
+./video-service/.idea
+
+
+./video-analytical-service/node_modules
+./video-analytical-service/.idea

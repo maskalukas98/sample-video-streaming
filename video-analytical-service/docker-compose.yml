@@ -1,0 +1,66 @@
+services:
+  node-http:
+    build:
+      context: .
+      dockerfile: ./docker/node/Dockerfile
+    command: [ "npm", "run","start-http" ]
+    depends_on:
+      - cassandra
+      - kafka
+    network_mode: "host"
+  node-consumers:
+    build:
+      context: .
+      dockerfile: ./docker/node/Dockerfile
+    command: [ "npm","run", "start-consumers" ]
+    depends_on:
+      - cassandra
+      - kafka
+    network_mode: "host"
+
+  cassandra:
+    build:
+      context: .
+      dockerfile: ./docker/cassandra/Dockerfile
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+      - "7000:7000"
+      - "7001:7001"
+    environment:
+      - CASSANDRA_CLUSTER_NAME=cluster-test
+      - CASSANDRA_LISTEN_ADDRESS=cassandra
+      - CASSANDRA_BROADCAST_ADDRESS=cassandra
+      - CASSANDRA_SEEDS=cassandra
+    networks:
+      - vs_network
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+    networks:
+      - vs_network
+
+  kafka:
+    image: wurstmeister/kafka:2.13-2.8.1
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    expose:
+      - "9093"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "view_event:1:1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - vs_network
+
+networks:
+  vs_network:
+    driver: bridge
