@@ -19,13 +19,14 @@ This project is composed of three services:
 - video service (it streams videos and returns metadata)
 - video-analytical-service (it stores stats about videos)
 
+*Frontend*
+![Frontend](./docs/frontend.png)
+
 ## Launch
 
 - Look in the sub projects readme.
 
 ## Architecture
-*Frontend*
-![Frontend](./docs/frontend.png)
 
 *Get video metadata*
 ![get_video_metadata_img](./docs/diagram-get-video-metadata.png)
