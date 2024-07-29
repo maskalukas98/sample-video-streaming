@@ -24,13 +24,13 @@ This project is composed of three services:
 - Look in the sub projects readme.
 
 ## Architecture
-<h4>Frontend</h4>
-![frontend_img](./docs/frontend.png)
+*Frontend*
+![Frontend](./docs/frontend.png)
 
-<h4>Get video metadata</h4>
+*Get video metadata*
 ![get_video_metadata_img](./docs/diagram-get-video-metadata.png)
 
-<h4>Stream video</h4>
+*Stream video*
 ![stream_video_img](./docs/diagram-stream-video.png)
 
 ## Observability
